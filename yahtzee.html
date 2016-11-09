@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dice Suite - Yahtzee</title>
+    <script type="text/javascript">
+
+        var rolls = {"1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0};
+
+        function oneRoll(dieNumber) {
+            var randNum, fileName;
+            randNum = Math.floor(Math.random() * (6 - 1 + 1)) + 1;
+            fileName = "images/die" + randNum + ".png";
+            document.getElementById(dieNumber).setAttribute('alt',randNum.toString());
+            document.getElementById(dieNumber).setAttribute('src',fileName);
+        }
+
+        function rollDice() {
+            rolls = {"1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0};
+            var checks = ["chkDie1", "chkDie2", "chkDie3", "chkDie4", "chkDie5", "chkDie6"];
+            for (var i = 0; i < checks.length; i++) {
+                if (document.getElementById(checks[i]).checked == false) {
+                    var imgId = "die" + (checks[i].substring(6, 7));
+                    oneRoll(imgId);
+                }
+            }
+            fillRolls();
+            onesScore();
+            twosScore();
+            threesScore();
+            foursScore();
+            fivesScore();
+            sixesScore();
+            threeOkScore();
+            fourOkScore();
+            fullHouseScore();
+            smStraightScore();
+            lgStraightScore();
+            yahtzeeScore();
+            chanceScore();
+
+        }
+        function fillRolls() {
+            var rolls = {"1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0};
+            var dies = ["die1", "die2", "die3", "die4", "die5", "die6"];
+            for (var i = 0; i < dies.length; i++) {
+                var z = parseInt(document.getElementById(dies[i]).alt);
+                rolls[z] += 1;
+            }
+        }
+
+        function onesScore() {
+            var total = 0;
+            var dies = ["die1", "die2", "die3", "die4", "die5", "die6"];
+            for (var i = 0; i < dies.length; i++) {
+                if (document.getElementById(dies[i]).alt == "1") {
+                    total += 1;
+                }
+            }
+            document.getElementById("ones").innerHTML = total.toString();
+        }
+
+        function twosScore() {
+            var total = 0;
+            var dies = ["die1", "die2", "die3", "die4", "die5", "die6"];
+            for (var i = 0; i < dies.length; i++) {
+                if (document.getElementById(dies[i]).alt == "2") {
+                    total += 2;
+                }
+            }
+            document.getElementById("twos").innerHTML = total.toString();
+        }
+
+        function threesScore() {
+            var total = 0;
+            var dies = ["die1", "die2", "die3", "die4", "die5", "die6"];
+            for (var i = 0; i < dies.length; i++) {
+                if (document.getElementById(dies[i]).alt == "3") {
+                    total += 3;
+                }
+            }
+            document.getElementById("threes").innerHTML = total.toString();
+        }
+
+        function foursScore() {
+            var total = 0;
+            var dies = ["die1", "die2", "die3", "die4", "die5", "die6"];
+            for (var i = 0; i < dies.length; i++) {
+                if (document.getElementById(dies[i]).alt == "4") {
+                    total += 4;
+                }
+            }
+            document.getElementById("fours").innerHTML = total.toString();
+        }
+
+        function fivesScore() {
+            var total = 0;
+            var dies = ["die1", "die2", "die3", "die4", "die5", "die6"];
+            for (var i = 0; i < dies.length; i++) {
+                if (document.getElementById(dies[i]).alt == "5") {
+                    total += 5;
+                }
+            }
+            document.getElementById("fives").innerHTML = total.toString();
+        }
+
+        function sixesScore() {
+            var total = 0;
+            var dies = ["die1", "die2", "die3", "die4", "die5", "die6"];
+            for (var i = 0; i < dies.length; i++) {
+                if (document.getElementById(dies[i]).alt == "6") {
+                    total += 6;
+                }
+            }
+            document.getElementById("sixes").innerHTML = total.toString();
+        }
+
+        function threeOkScore() {
+            var total = 0;
+            var sum = 0;
+            var dies = ["die1", "die2", "die3", "die4", "die5", "die6"];
+            for (var i = 0; i < dies.length; i++) {
+                var z = document.getElementById(dies[i]).alt;
+                sum += parseInt(z);
+                rolls[z] += 1;
+            }
+            for (var x = 0; x < 6; x++) {
+                if (rolls[x] >= 3) {
+                    total = sum;
+                }
+            }
+            document.getElementById("threeOfKind").innerHTML = total.toString();
+        }
+
+        function fourOkScore() {
+            var total = 0;
+            var sum = 0;
+            var dies = ["die1", "die2", "die3", "die4", "die5", "die6"];
+            for (var i = 0; i < dies.length; i++) {
+                var z = document.getElementById(dies[i]).alt;
+                sum += parseInt(z);
+            }
+            for (var x = 0; x < 6; x++) {
+                if (rolls[x] >= 4) {
+                    total = sum;
+                }
+            }
+            document.getElementById("fourOfKind").innerHTML = total.toString();
+        }
+
+        function fullHouseScore() {
+            var total = 0;
+            var dies = ["die1", "die2", "die3", "die4", "die5", "die6"];
+
+            for (var i = 0; i < 6; i++) {
+                if (rolls[i] == 3) {
+                    for (var x = 0; x < 6; x++) {
+                        if (rolls[x] == 2) {
+                            total = 25;
+                        }
+                    }
+                }
+            }
+
+            document.getElementById("fullHouse").innerHTML = total.toString();
+        }
+
+        function smStraightScore() {
+            var total = 0;
+            var dies = ["die1", "die2", "die3", "die4", "die5", "die6"];
+
+            if (rolls["1"] >= 1 && rolls["2"] >= 1 && rolls["3"] >= 1 && rolls["4"] >= 1) {
+                total = 30;
+            }
+            else if (rolls["2"] >= 1 && rolls["3"] >= 1 && rolls["4"] >= 1 && rolls["5"] >= 1) {
+                total = 30;
+            }
+            else if (rolls["3"] >= 1 && rolls["4"] >= 1 && rolls["5"] >= 1 && rolls["6"] >= 1) {
+                total = 30;
+            }
+
+            document.getElementById("smStraight").innerHTML = total.toString();
+        }
+
+        function lgStraightScore() {
+            var total = 0;
+            var dies = ["die1", "die2", "die3", "die4", "die5", "die6"];
+
+            if (rolls["1"] >= 1 && rolls["2"] >= 1 && rolls["3"] >= 1 && rolls["4"] >= 1 && rolls["5"] >= 1) {
+                total = 40;
+            }
+            else if (rolls["2"] >= 1 && rolls["3"] >= 1 && rolls["4"] >= 1 && rolls["5"] >= 1 && rolls["6"] >= 1) {
+                total = 40;
+            }
+
+            document.getElementById("lgStraight").innerHTML = total.toString();
+        }
+
+        function yahtzeeScore() {
+            var total = 0;
+
+            var dies = ["die1", "die2", "die3", "die4", "die5", "die6"];
+
+            for (var i = 0; i < 6; i++) {
+                if (rolls[i] == 5) {
+                    total = 50;
+                }
+            }
+
+            document.getElementById("yahtzee").innerHTML = total.toString();
+        }
+
+        function chanceScore() {
+            var sum = 0;
+            var dies = ["die1", "die2", "die3", "die4", "die5", "die6"];
+            for (var i = 0; i < dies.length; i++) {
+                var z = document.getElementById(dies[i]).alt;
+                sum += parseInt(z);
+            }
+            document.getElementById("chance").innerHTML = sum.toString();
+        }
+
+        function scoreOnes(){
+            var x= document.getElementById("ones").innerHTML;
+            document.getElementById("onesX").innerHTML=x;
+            document.getElementById("btnOnes").style.visibility="hidden";
+        }
+
+        function scoreTwos(){
+            var x= document.getElementById("twos").innerHTML;
+            document.getElementById("twosX").innerHTML=x;
+            document.getElementById("btnTwos").style.visibility="hidden";
+        }
+        function scoreThrees(){
+            var x= document.getElementById("threes").innerHTML;
+            document.getElementById("threesX").innerHTML=x;
+            document.getElementById("btnThrees").style.visibility="hidden";
+        }
+        function scoreFours(){
+            var x= document.getElementById("fours").innerHTML;
+            document.getElementById("foursX").innerHTML=x;
+            document.getElementById("btnFours").style.visibility="hidden";
+        }
+        function scoreFives(){
+            var x= document.getElementById("fives").innerHTML;
+            document.getElementById("fivesX").innerHTML=x;
+            document.getElementById("btnFives").style.visibility="hidden";
+        }
+        function scoreSixes(){
+            var x= document.getElementById("sixes").innerHTML;
+            document.getElementById("sixesX").innerHTML=x;
+            document.getElementById("btnSixes").style.visibility="hidden";
+        }
+        function scoreThreeOK(){
+            var x= document.getElementById("threeOfKind").innerHTML;
+            document.getElementById("threeOfKindX").innerHTML=x;
+            document.getElementById("btn3OK").style.visibility="hidden";
+        }
+        function scoreFourOK(){
+            var x= document.getElementById("fourOfKind").innerHTML;
+            document.getElementById("fourOfKindX").innerHTML=x;
+            document.getElementById("btn4OK").style.visibility="hidden";
+        }
+        function scoreFullHouse(){
+            var x= document.getElementById("fullHouse").innerHTML;
+            document.getElementById("fullHouseX").innerHTML=x;
+            document.getElementById("btnFullHouse").style.visibility="hidden";
+        }
+        function scoreSmStraight(){
+            var x= document.getElementById("smStraight").innerHTML;
+            document.getElementById("smStraightX").innerHTML=x;
+            document.getElementById("btnSmStr").style.visibility="hidden";
+        }
+        function scoreLgStraight(){
+            var x= document.getElementById("lgStraight").innerHTML;
+            document.getElementById("lgStraightX").innerHTML=x;
+            document.getElementById("btnLgStr").style.visibility="hidden";
+        }
+        function scoreYahtzee(){
+            var x= document.getElementById("yahtzee").innerHTML;
+            document.getElementById("yahtzeeX").innerHTML=x;
+            document.getElementById("btnYahtzee").style.visibility="hidden";
+        }
+        function scoreChance(){
+            var x= document.getElementById("chance").innerHTML;
+            document.getElementById("chanceX").innerHTML=x;
+            document.getElementById("btnChance").style.visibility="hidden";
+        }
+    </script>
+    <script src="jquery-3.1.1.js"></script>
+    <style type="text/css">
+
+        .scored {
+            color: #ff0000;
+        }
+
+        table {
+            width: 90%;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div id="dice" class="table">
+    <table id="dieTable" style="width: auto;">
+        <tr>
+            <th><img src="images/die1.png" id="die1" height="150px" width="150px" ></th>
+            <th><img src="images/die2.png" id="die2" height="150px" width="150px" ></th>
+            <th><img src="images/die3.png" id="die3" height="150px" width="150px" ></th>
+            <th><img src="images/die4.png" id="die4" height="150px" width="150px" ></th>
+            <th><img src="images/die5.png" id="die5" height="150px" width="150px" ></th>
+            <th><img src="images/die6.png" id="die6" height="150px" width="150px" ></th>
+        </tr>
+        <tr>
+            <th><input type="checkbox" id="chkDie1"></th>
+            <th><input type="checkbox" id="chkDie2"></th>
+            <th><input type="checkbox" id="chkDie3"></th>
+            <th><input type="checkbox" id="chkDie4"></th>
+            <th><input type="checkbox" id="chkDie5"></th>
+            <th><input type="checkbox" id="chkDie6"></th>
+        </tr>
+    </table>
+    <br>
+    <table id="scoreTable">
+        <tr>
+            <th>Upper Section</th>
+        </tr>
+        <tr>
+            <th>Ones</th>
+            <th>
+                <button id="btnOnes" onclick="scoreOnes()">Ones</button>
+            </th>
+            <th>
+                <div id="ones">0</div>
+            </th>
+            <th>
+                <div id="onesX" class="scored">0</div>
+            </th>
+        </tr>
+        <tr>
+            <th>Twos</th>
+            <th>
+                <button id="btnTwos" onclick="scoreTwos()">Twos</button>
+            </th>
+            <th>
+                <div id="twos">0</div>
+            </th>
+            <th>
+                <div id="twosX" class="scored">0</div>
+            </th>
+        </tr>
+        <tr>
+            <th>Threes</th>
+            <th>
+                <button id="btnThrees" onclick="scoreThrees()">Threes</button>
+            </th>
+            <th>
+                <div id="threes">0</div>
+            </th>
+            <th>
+                <div id="threesX" class="scored">0</div>
+            </th>
+        </tr>
+        <tr>
+            <th>Fours</th>
+            <th>
+                <button id="btnFours" onclick="scoreFours()">Fours</button>
+            </th>
+            <th>
+                <div id="fours">0</div>
+            </th>
+            <th>
+                <div id="foursX" class="scored">0</div>
+            </th>
+        </tr>
+        <tr>
+            <th>Fives</th>
+            <th>
+                <button id="btnFives" onclick="scoreFives()">Fives</button>
+            </th>
+            <th>
+                <div id="fives">0</div>
+            </th>
+            <th>
+                <div id="fivesX" class="scored">0</div>
+            </th>
+        </tr>
+        <tr>
+            <th>Sixes</th>
+            <th>
+                <button id="btnSixes" onclick="scoreSixes()">Sixes</button>
+            </th>
+            <th>
+                <div id="sixes">0</div>
+            </th>
+            <th>
+                <div id="sixesX" class="scored">0</div>
+            </th>
+        </tr>
+        <tr>
+            <th>Lower Section</th>
+        </tr>
+        <tr>
+            <th>3 of a Kind</th>
+            <th>
+                <button id="btn3OK" onclick="scoreThreeOK()">3 of a Kind</button>
+            </th>
+            <th>
+                <div id="threeOfKind">0</div>
+            </th>
+            <th>
+                <div id="threeOfKindX" class="scored">0</div>
+            </th>
+        </tr>
+        <tr>
+            <th>4 of a Kind</th>
+            <th>
+                <button id="btn4OK" onclick="scoreFourOK()">4 of a Kind</button>
+            </th>
+            <th>
+                <div id="fourOfKind">0</div>
+            </th>
+            <th>
+                <div id="fourOfKindX" class="scored">0</div>
+            </th>
+        </tr>
+        <tr>
+            <th>Full House</th>
+            <th>
+                <button id="btnFullHouse" onclick="scoreFullHouse()">Full House</button>
+            </th>
+            <th>
+                <div id="fullHouse">0</div>
+            </th>
+            <th>
+                <div id="fullHouseX" class="scored">0</div>
+            </th>
+        </tr>
+        <tr>
+            <th>Small Straight</th>
+            <th>
+                <button id="btnSmStr" onclick="scoreSmStraight()">Small Straight</button>
+            </th>
+            <th>
+                <div id="smStraight">0</div>
+            </th>
+            <th>
+                <div id="smStraightX" class="scored">0</div>
+            </th>
+        </tr>
+        <tr>
+            <th>Large Straight</th>
+            <th>
+                <button id="btnLgStr" onclick="scoreLgStraight()">Large Straight</button>
+            </th>
+            <th>
+                <div id="lgStraight">0</div>
+            </th>
+            <th>
+                <div id="lgStraightX" class="scored">0</div>
+            </th>
+        </tr>
+        <tr>
+            <th>Yahtzee</th>
+            <th>
+                <button id="btnYahtzee" onclick="scoreYahtzee()">Yahtzee</button>
+            </th>
+            <th>
+                <div id="yahtzee">0</div>
+            </th>
+            <th>
+                <div id="yahtzeeX" class="scored">0</div>
+            </th>
+        </tr>
+        <tr>
+            <th>Chance</th>
+            <th>
+                <button id="btnChance" onclick="scoreChance()">Chance</button>
+            </th>
+            <th>
+                <div id="chance">0</div>
+            </th>
+            <th>
+                <div id="chanceX" class="scored">0</div>
+            </th>
+        </tr>
+    </table>
+</div>
+<div id="main_content" style="float: inherit">
+    <button id="rollButton" type="button" onclick="rollDice()">Roll unchecked dice</button>
+</div>
+</body>
+</html>
